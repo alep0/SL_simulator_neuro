@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─────────────────────────────────────────────────────
+  # Lint
+  # ─────────────────────────────────────────────────────
+  lint:
+    name: Lint (ruff + black check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install ruff black
+      - run: ruff check source/ validations/
+      - run: black --check source/ validations/
+
+  # ─────────────────────────────────────────────────────
+  # Test (Python-only – no C++ extension required)
+  # ─────────────────────────────────────────────────────
+  test-python:
+    name: Tests (Python fallback)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install numpy scipy matplotlib seaborn pytest pytest-cov pybind11
+
+      - name: Run tests
+        run: |
+          pytest validations/tests/ -v --tb=short \
+                 --cov=source --cov-report=term-missing
+
+  # ─────────────────────────────────────────────────────
+  # Build C++ extension on Linux
+  # ─────────────────────────────────────────────────────
+  build-cpp-linux:
+    name: Build C++ extension (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get install -y libomp-dev
+          pip install pybind11 numpy
+
+      - name: Build extension
+        run: python setup.py build_ext --inplace
+
+      - name: Smoke test
+        run: python -c "import stuart_landau_simulator; print('C++ OK')"
+
+  # ─────────────────────────────────────────────────────
+  # Docker build
+  # ─────────────────────────────────────────────────────
+  docker:
+    name: Docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t neuro-sl-simulator:ci .
+
+      - name: Run tests inside Docker
+        run: |
+          docker run --rm neuro-sl-simulator:ci \
+            python3 -m pytest validations/tests/ -v --tb=short
+
+  # ─────────────────────────────────────────────────────
+  # Config validation
+  # ─────────────────────────────────────────────────────
+  validate-configs:
+    name: Validate JSON configs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install numpy
+
+      - name: Validate simulation config
+        run: python validations/validate_config.py --config config/simulation_config.json
+
+      - name: Validate analysis config
+        run: python validations/validate_config.py --config config/analysis_config.json

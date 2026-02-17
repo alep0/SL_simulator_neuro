@@ -1,0 +1,44 @@
+version: "3.9"
+
+# =============================================================================
+# docker-compose.yml — neuro-sl-simulator
+# =============================================================================
+# Services:
+#   simulator  – main computation container (C++ + Python)
+#
+# Usage:
+#   docker compose up --build           # build image and run default CMD
+#   docker compose run --rm simulator bash   # interactive shell
+# =============================================================================
+
+services:
+  simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime        # use the lean runtime stage
+    image: neuro-sl-simulator:latest
+    container_name: neuro_sl_simulator
+
+    # Mount host directories into the container
+    volumes:
+      - ./data:/workspace/data:ro          # input data (read-only)
+      - ./results:/workspace/results        # output figures and matrices
+      - ./logs:/workspace/logs              # runtime log files
+
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - LOG_DIR=/workspace/logs
+
+    # Default: run the test suite.
+    # Override at the command line:
+    #   docker compose run --rm simulator bash scripts/run_batch_rats.sh ...
+    command: >
+      python3 -m pytest validations/tests/ -v --tb=short
+
+    # Resource limits (adjust for your hardware)
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: "8g"

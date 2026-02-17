@@ -1,0 +1,29 @@
+name: neuro_sl_env
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  # Python version
+  - python=3.11
+
+  # Core scientific stack
+  - numpy>=1.22
+  - scipy>=1.8
+  - matplotlib>=3.5
+  - seaborn>=0.12
+
+  # Build tools
+  - pybind11>=2.10
+  - setuptools>=65
+  - pip
+
+  # Development / testing
+  - pytest>=7
+  - pytest-cov
+  - black
+  - ruff
+
+  # pip-only packages (no conda build)
+  - pip:
+    - neuro-sl-simulator  # install local package after build_ext

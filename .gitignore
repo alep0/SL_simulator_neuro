@@ -1,0 +1,74 @@
+# =============================================================================
+# .gitignore — neuro-sl-simulator
+# =============================================================================
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.mypy_cache/
+.ruff_cache/
+
+# C++ compiled extension
+*.so
+*.pyd
+*.dll
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+.conda/
+
+# Data (large binary files – store with DVC or similar)
+data/raw/
+data/processed/
+*.npy
+*.npz
+*.mat
+*.h5
+*.hdf5
+
+# Generated results and logs (do not version-control outputs)
+results/
+logs/
+
+# Figures
+*.png
+*.pdf
+*.svg
+*.eps
+
+# Jupyter notebooks (optional – remove if you use notebooks)
+.ipynb_checkpoints/
+*.ipynb
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Environment files with secrets
+.env
+.env.*
+
+# Coverage reports
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Distribution / packaging
+MANIFEST

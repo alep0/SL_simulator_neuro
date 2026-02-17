@@ -1,0 +1,17 @@
+{
+  "_comment": "Analysis configuration for signal filtering and functional connectivity.",
+  "_schema": "See validations/validate_config.py for validation rules.",
+
+  "lowpass_freq":    0.5,
+  "highpass_freq":   0.01,
+  "filter_order":    50,
+  "resample_factor": 100,
+  "transient_steps": 15,
+  "cross_corr_frac": 0.001,
+
+  "mode":  "filtered",
+  "group": "t1",
+  "rat":   "R01",
+
+  "output_dir": "/data/workspaces/neuro_sl/results/functional_connectivity/t1/R01"
+}
