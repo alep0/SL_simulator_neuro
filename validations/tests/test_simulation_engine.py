@@ -143,7 +143,7 @@ class TestConfigValidator:
         cfg = dict(
             tmax=60.0, dt=1e-4, K=1e5, a=-5.0,
             op_net=3, op_model=1, rat="R01",
-            mean_delay=5.8, sig_noise=1e-3,
+            mean_vel=5.8, sig_noise=1e-3,
         )
         errors = validate_simulation_config(cfg)
         assert errors == [], f"Unexpected errors: {errors}"
@@ -154,7 +154,7 @@ class TestConfigValidator:
         cfg = dict(
             tmax=60.0, dt=1e-4, K=1e5, a=-5.0,
             op_net=99, op_model=1, rat="R01",
-            mean_delay=5.8, sig_noise=1e-3,
+            mean_vel=5.8, sig_noise=1e-3,
         )
         errors = validate_simulation_config(cfg)
         assert any("op_net" in e for e in errors)

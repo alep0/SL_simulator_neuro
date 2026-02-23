@@ -7,7 +7,7 @@
   "K":          100000.0,
   "a":          -5.0,
   "sig_noise":  0.001,
-  "mean_delay": 5.8,
+  "mean_vel": 5.8,
 
   "op_net":   3,
   "op_model": 1,
@@ -19,6 +19,6 @@
   "use_cpp":   true,
   "save_data": false,
 
-  "data_dir":   "/data/workspaces/neuro_sl/data/raw/t1/RN_SI_v0-1_th-0.0/filter_kick_out/R01",
-  "output_dir": "/data/workspaces/neuro_sl/results/simulation/t1/R01"
+  "data_dir":   "/mnt/c/Users/aleph/Desktop/Job/Code/GitHub/Tests/SL_simulator_neuro/data/processed/t1/FA_RN_SI_v0-1_th-0.0/filter_kick_out/R01",
+  "output_dir": "/mnt/c/Users/aleph/Desktop/Job/Code/GitHub/Tests/SL_simulator_neuro/results/simulation/t1/R01"
 }

@@ -83,6 +83,13 @@ neuro-sl-simulator/
 ```bash
 # 1. Clone
 git clone https://github.com/your-org/neuro-sl-simulator.git
+
+git remote set-url origin git@github.com:alep0/SL_simulator_neuro.git
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+ssh -T git@github.com
+ssh-add -l
+git clone git@github.com:alep0/SL_simulator_neuro.git
 cd neuro-sl-simulator
 
 # 2. Create conda environment and build C++ extension
@@ -92,10 +99,10 @@ python setup.py build_ext --inplace
 
 # 3. Run a single rat
 ./scripts/run_simulation_analysis.sh \
-    data/raw/t1/RN_SI_v0-1_th-0.0/filter_kick_out/R01 \
+    data/processed/t1/FA_RN_SI_v0-1_th-0.0/filter_kick_out/R01 \
     results/Santiago/t1/R01 \
     config \
-    3 t1 R01 60
+    3 t1 R01 60 raw
 ```
 
 See [docs/QUICKSTART.md](docs/QUICKSTART.md) for a detailed walkthrough.

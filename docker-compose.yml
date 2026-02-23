@@ -1,4 +1,4 @@
-version: "3.9"
+#version: "3.9"
 
 # =============================================================================
 # docker-compose.yml — neuro-sl-simulator
@@ -22,7 +22,7 @@ services:
 
     # Mount host directories into the container
     volumes:
-      - ./data:/workspace/data:ro          # input data (read-only)
+      - ./data/processed:/workspace/data:ro          # input data (read-only)
       - ./results:/workspace/results        # output figures and matrices
       - ./logs:/workspace/logs              # runtime log files
 

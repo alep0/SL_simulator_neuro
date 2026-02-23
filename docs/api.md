@@ -24,7 +24,7 @@ cfg = SimulationConfig(
     tmax       = 60.0,
     dt         = 1e-4,
     dt_save    = 1e-4,
-    mean_delay = 5.8,
+    mean_vel = 5.8,
     op_net     = 3,           # 2=velocity, 3=tau, 4=bimodal
     op_model   = 1,           # 1=fixed freqs, 2=connectivity-derived
     rat        = "R01",
@@ -46,7 +46,7 @@ cfg = SimulationConfig(
 | `tmax` | float | Simulation duration (s) |
 | `dt` | float | Integration step (s) |
 | `dt_save` | float | Output sampling interval (s) |
-| `mean_delay` | float | Mean axonal delay (s) |
+| `mean_vel` | float | Mean axonal delay (s) |
 | `op_net` | int | Network mode: 2, 3, or 4 |
 | `op_model` | int | Frequency model: 1 or 2 |
 | `use_cpp` | bool | Use C++ back-end if available |
@@ -218,7 +218,8 @@ Single-rat simulation + analysis pipeline.
     <op_net>      \   # 4: 2, 3, or 4
     <group>       \   # 5: t1 or t2
     <rat>         \   # 6: R01 … R19
-    <tmax>            # 7: simulation duration (s)
+    <tmax>        \   # 7: simulation duration (s)
+    <analysis_mode>   # 8: preprocessing: raw, filtered, bold
 ```
 
 Logs written to `logs/run_simulation_analysis_<timestamp>.log`.
@@ -236,7 +237,8 @@ Process multiple rats sequentially.
     "<rat1> <rat2>"  \   # 3: space-separated rat list (quote it)
     <root_path>      \   # 4: project root
     <model_name>     \   # 5: output sub-directory label
-    <tmax>               # 6
+    <tmax>           \   # 6: simulaton duration (s)
+    <analysis_mode>      # 7: preprocessing: raw, filtered, bold
 ```
 
 ---
@@ -294,11 +296,11 @@ sim = sl.StuartLandauSimulator(
     tmax        = 60.0,     # total time (s)
     t_prev      = 0.0,      # warm-up time (s)
     sig_noise   = 1e-3,     # noise amplitude
-    mean_delay  = 5.8,      # mean delay (s)
+    mean_vel    = 5.8,      # mean velocity (m/s)
 )
 
 sim.set_connectivity(C1, Delays1)            # single layer
-sim.set_connectivity(C1, Delays1, C2, D2)   # two layers
+sim.set_connectivity(C1, Delays1, C2, D2)    # two layers
 
 trajectory = sim.simulate(K=1e5, a=-5.0, f=f_vec)
 # trajectory.shape == (N, n_save)

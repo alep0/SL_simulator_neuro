@@ -40,7 +40,7 @@ SIMULATION_REQUIRED_KEYS: dict[str, type] = {
     "op_net":     int,
     "op_model":   int,
     "rat":        str,
-    "mean_delay": float,
+    "mean_vel": float,
     "sig_noise":  float,
 }
 
@@ -103,8 +103,8 @@ def validate_simulation_config(config: dict) -> list[str]:
         errors.append("K (coupling strength) must be non-negative.")
     if "sig_noise" in config and config.get("sig_noise", 0) < 0:
         errors.append("sig_noise must be non-negative.")
-    if "mean_delay" in config and config.get("mean_delay", 0) < 0:
-        errors.append("mean_delay must be non-negative.")
+    if "mean_vel" in config and config.get("mean_vel", 0) < 0:
+        errors.append("mean_vel must be non-negative.")
 
     # op_model=2 requires w0 and wr
     if config.get("op_model") == 2:

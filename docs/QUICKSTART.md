@@ -10,6 +10,13 @@ This guide walks you through a complete simulation run in under 10 minutes.
 
 ```bash
 git clone https://github.com/your-org/neuro-sl-simulator.git
+
+git remote set-url origin git@github.com:alep0/SL_simulator_neuro.git
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+ssh -T git@github.com
+ssh-add -l
+git clone git@github.com:alep0/SL_simulator_neuro.git
 cd neuro-sl-simulator
 
 conda env create -f config/environment.yml
@@ -21,6 +28,8 @@ python setup.py build_ext --inplace
 
 ```bash
 git clone https://github.com/your-org/neuro-sl-simulator.git
+
+git clone git@github.com:alep0/SL_simulator_neuro.git
 cd neuro-sl-simulator
 docker compose up --build
 ```
@@ -49,7 +58,7 @@ th-0.0_R01_v.txt     # velocity (m/s)             (79×79)
 
 ```bash
 python validations/validate_connectivity.py \
-    --data-dir data/raw/t1/RN_SI_v0-1_th-0.0/filter_kick_out/R01 \
+    --data-dir data/processed/t1/FA_RN_SI_v0-1_th-0.0/filter_kick_out/R01 \
     --rat R01 --th-value 0.0 --op-net 3
 ```
 
@@ -65,16 +74,17 @@ python validations/validate_config.py --config config/simulation_config.json
 chmod +x scripts/run_simulation_analysis.sh
 
 ./scripts/run_simulation_analysis.sh \
-    data/raw/t1/RN_SI_v0-1_th-0.0/filter_kick_out/R01 \
+    data/processed/t1/FA_RN_SI_v0-1_th-0.0/filter_kick_out/R01 \
     results/CC_Santiago/t1/R01 \
     config \
     3 \
     t1 \
     R01 \
-    60
+    60 \
+    raw
 ```
 
-Arguments in order: `<data_dir> <output_dir> <config_dir> <op_net> <group> <rat> <tmax_s>`
+Arguments in order: `<data_dir> <output_dir> <config_dir> <op_net> <group> <rat> <tmax_s> <analysis_mode>`
 
 Results appear in `results/CC_Santiago/t1/R01/`.
 
@@ -91,7 +101,8 @@ chmod +x scripts/run_batch_rats.sh
     "R01 R02 R03 R04 R05" \
     "$(pwd)" \
     CC_Santiago \
-    60
+    60 \
+    raw
 ```
 
 ---

@@ -26,4 +26,4 @@ dependencies:
 
   # pip-only packages (no conda build)
   - pip:
-    - neuro-sl-simulator  # install local package after build_ext
+    #- SL_simulator_neuro  # install local package after build_ext

@@ -13,5 +13,5 @@
   "group": "t1",
   "rat":   "R01",
 
-  "output_dir": "/data/workspaces/neuro_sl/results/functional_connectivity/t1/R01"
+  "output_dir": "/mnt/c/Users/aleph/Desktop/Job/Code/GitHub/Tests/SL_simulator_neuro/results/functional_connectivity/t1/R01"
 }

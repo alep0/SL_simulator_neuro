@@ -23,21 +23,20 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 # System dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        python3.11 \
-        python3.11-dev \
+        python3 \
+        python3-dev \
         python3-pip \
         g++ \
         libgomp1 \
         libomp-dev \
         make \
-    && ln -sf /usr/bin/python3.11 /usr/bin/python3 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
 
 # Install Python build dependencies
 COPY config/environment.yml /tmp/environment.yml
-RUN pip3 install --no-cache-dir \
+RUN pip3 install --no-cache-dir --break-system-packages \
         "pybind11>=2.10" \
         "numpy>=1.22" \
         setuptools wheel
@@ -45,8 +44,8 @@ RUN pip3 install --no-cache-dir \
 # Copy only the files needed for compilation
 COPY setup.py .
 COPY source/core/stuart_landau_simulator.cpp source/core/
-COPY source/__init__.py source/ 2>/dev/null || true
-COPY source/core/__init__.py source/core/ 2>/dev/null || true
+COPY source/__init__.py* source/ 
+COPY source/core/__init__.py* source/core/ 
 
 # Build in-place (produces stuart_landau_simulator*.so next to setup.py)
 # Note: -march=native is intentionally omitted for portability inside Docker
@@ -71,20 +70,21 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 # Runtime system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        python3.11 \
+        python3 \
         python3-pip \
         libgomp1 \
-    && ln -sf /usr/bin/python3.11 /usr/bin/python3 \
+        bc \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
 
 # Install Python runtime dependencies
-RUN pip3 install --no-cache-dir \
+RUN pip3 install --no-cache-dir --break-system-packages \
         "numpy>=1.22" \
         "scipy>=1.8" \
         "matplotlib>=3.5" \
-        "seaborn>=0.12"
+        "seaborn>=0.12" \
+        "pytest"
 
 # Copy built C++ extension from the builder stage
 COPY --from=builder /build/stuart_landau_simulator*.so ./

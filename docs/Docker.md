@@ -10,7 +10,20 @@ Python dependencies. All compilation happens inside the container.
 - [Docker Engine](https://docs.docker.com/engine/install/) ≥ 24
 - [Docker Compose](https://docs.docker.com/compose/install/) ≥ 2.20 (included in Docker Desktop)
 
+1.- Update your package index:
+sudo apt-get update
+
+2.- Install the buildx plugin:
+sudo apt-get install docker-buildx-plugin
+
+3.- Verify it works:
+docker buildx version
+
 ---
+
+## Windows
+
+Start Docker Desktop
 
 ## Quick start
 
@@ -42,10 +55,10 @@ docker run --rm \
     -v "$(pwd)/logs:/workspace/logs" \
     neuro-sl-simulator:latest \
     bash scripts/run_simulation_analysis.sh \
-        data/raw/t1/RN_SI_v0-1_th-0.0/filter_kick_out/R01 \
+        data/processed/t1/FA_RN_SI_v0-1_th-0.0/filter_kick_out/R01 \
         results/CC_Santiago/t1/R01 \
         config \
-        3 t1 R01 60
+        3 t1 R01 60 raw
 ```
 
 **Volume mounts**
@@ -67,7 +80,7 @@ docker run --rm \
     -v "$(pwd)/logs:/workspace/logs" \
     neuro-sl-simulator:latest \
     bash scripts/run_batch_rats.sh \
-        3 t1 "R01 R02 R03" /workspace CC_Santiago 60
+        3 t1 "R01 R02 R03" /workspace CC_Santiago 60 raw
 ```
 
 ---
